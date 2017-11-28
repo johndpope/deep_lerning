@@ -61,7 +61,7 @@ def train(config):
     ###########################################################################
     # Implement code here.
     ###########################################################################
-    phrase  = 'President'
+    phrase  = 'in the year'
 
 
     input_placeholder = tf.placeholder(tf.float32, [config.seq_length, config.batch_size, dataset.vocab_size])
@@ -106,8 +106,8 @@ def train(config):
     #predictions   = model.predictions(probabilities)
 
     # Compute prediction given phrase
-    predictions = model.get_predictions(phrase_placeholder, 30)
-    predictions_char = model.get_predictions(char_placeholder, 30)
+    predictions = model.get_predictions(phrase_placeholder, 100)
+    predictions_char = model.get_predictions(char_placeholder, 100)
 
     summary = tf.summary.merge_all()
     init = tf.global_variables_initializer()
@@ -159,13 +159,15 @@ def train(config):
             #summary_writer.flush()
 
         if train_step % config.sample_every == 0:
-            feed_dict_bonus[char_placeholder] = np.expand_dims(one_hot([np.random.randint(0,dataset.vocab_size)], dataset.vocab_size),0)
+            random_char = np.random.randint(0,dataset.vocab_size)
+            feed_dict_bonus[char_placeholder] = np.expand_dims(one_hot([random_char], dataset.vocab_size),0)
             predic, predic_char = sess.run([predictions, predictions_char], feed_dict=feed_dict_bonus)
             #print(predic)
             final_string = dataset.convert_to_string(predic)
-            print(final_string)
+            print(phrase, final_string)
             final_string = dataset.convert_to_string(predic_char)
-            print(final_string)
+            random_char = dataset.convert_to_string([random_char])
+            print(random_char, final_string, '\n')
             
             '''inputs  = np.zeros((config.seq_length, config.batch_size, dataset.vocab_size))
             targets = np.zeros((config.batch_size, config.seq_length))
@@ -190,7 +192,7 @@ def train(config):
             print(final_string)'''
 
         if train_step % config.checkpoint_every == 0:
-            saver.save(sess, save_path='./checkpoints/model3.ckpt')
+            saver.save(sess, save_path='./checkpoints/model4.ckpt')
 
 
 
