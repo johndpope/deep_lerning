@@ -26,7 +26,7 @@ class TextDataset(object):
 
     def __init__(self, filename):
         assert os.path.splitext(filename)[1] == ".txt"
-        self._data = open(filename, 'r').read()
+        self._data = open(filename, 'r', encoding="utf8").read()
         self._chars = list(set(self._data))
         self._data_size, self._vocab_size = len(self._data), len(self._chars)
         print("Initialize dataset with {} characters, {} unique.".format(
