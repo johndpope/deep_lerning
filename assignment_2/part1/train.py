@@ -66,12 +66,13 @@ def train(config):
     # Implement code here.
     ###########################################################################
     # Load test data
-    x_test, y_test = get_batch(config.batch_size*config.train_steps, config.input_length)
+    test_size = config.batch_size*config.train_steps
+    x_test, y_test = get_batch(test_size, config.input_length)
 
     input_placeholder  = tf.placeholder(tf.float32, shape=(config.input_length-1, None, config.input_dim))
     labels_placeholder = tf.placeholder(tf.int32, shape=(None, config.num_classes))
     logits = model.compute_logits(input_placeholder)
-    logits_test = model.compute_logits_test(input_placeholder, config.batch_size*config.train_steps)
+    logits_test = model.compute_logits_test(input_placeholder, test_size)
 
     # Define the optimizer
     optimizer = tf.train.RMSPropOptimizer(config.learning_rate)

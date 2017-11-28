@@ -90,7 +90,7 @@ class LSTM(object):
         cross_entropy = tf.nn.softmax_cross_entropy_with_logits(
                         labels=labels, logits=logits, name='xentropy')
         loss = tf.reduce_mean(cross_entropy, name='xentropy_mean')
-        tf.summary.scalar('loss', loss)
+        #tf.summary.scalar('loss', loss)
         return loss
 
     def accuracy(self, logits, labels):
