@@ -51,6 +51,9 @@ class TextDataset(object):
     def convert_to_string(self, char_ix):
         return ''.join(self._ix_to_char[ix] for ix in char_ix)
 
+    def convert_to_numbers(self, char_ix):
+        return [self._char_to_ix[ch] for ch in char_ix]
+
     @property
     def vocab_size(self):
         return self._vocab_size

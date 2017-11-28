@@ -77,5 +77,32 @@ class TextGenerationModel(object):
     def predictions(self, probabilities):
         # Returns the per-step predictions
         #predictions = tf.argmax(tf.argmax(probabilities,0),1)
-        predictions = tf.argmax(probabilities,0)
+        predictions = tf.argmax(probabilities,1)
         return predictions
+
+    def get_predictions(self, phrase, prediction_length):
+        # Get state after phrase
+        state  = self.stacked_lstm.zero_state(1, tf.float32)
+        for i in range(phrase.shape[0]):
+            output, state = self.stacked_lstm(phrase[i], state)
+
+        # Predict first character
+        output     = tf.matmul(output, self.Wout) + self.bias_out
+        output     = self.probabilities(output)
+        output     = self.predictions(output)
+
+        # Initialize final sentence
+        sentence   = []
+        sentence.append(output[0])
+        output     = tf.one_hot(output, self._vocab_size, axis=-1)
+
+        # Get next characters
+        for i in range(prediction_length-1):
+            output, state = self.stacked_lstm(output, state)
+            output = tf.matmul(output, self.Wout) + self.bias_out
+            output  = self.probabilities(output)
+            output  = self.predictions(output)
+            sentence.append(output[0])
+            output = tf.one_hot(output, self._vocab_size, axis=-1)
+
+        return sentence

@@ -61,12 +61,26 @@ def train(config):
     ###########################################################################
     # Implement code here.
     ###########################################################################
+    phrase  = 'President'
+    inputs  = np.zeros((config.seq_length, config.batch_size, dataset.vocab_size))
+    targets = np.zeros((config.batch_size, config.seq_length))
+    phrase  = dataset.convert_to_numbers(phrase)
+    phrase_ = np.zeros((len(phrase), dataset.vocab_size))
+    for i,char in enumerate(phrase):
+        phrase_[i, :] = one_hot([char], dataset.vocab_size)
+    feed_dict_sample = {
+        input_placeholder: inputs,
+        label_placeholder: targets,
+        phrase_placeholder: np.expand_dims(phrase_, 1)
+    }
+
 
     input_placeholder = tf.placeholder(tf.float32, [config.seq_length, config.batch_size, dataset.vocab_size])
     #label_placeholder = tf.placeholder(tf.float32, [config.seq_length, config.batch_size, dataset.vocab_size])
     #input_placeholder = tf.placeholder(tf.int32, [config.seq_length, config.batch_size])
     label_placeholder = tf.placeholder(tf.int32, [config.batch_size, config.seq_length])
-    char_placeholder = tf.placeholder(tf.float32, [1,config.batch_size, dataset.vocab_size])
+    #char_placeholder = tf.placeholder(tf.float32, [1,config.batch_size, dataset.vocab_size])
+    phrase_placeholder = tf.placeholder(tf.float32, [len(phrase), 1, dataset.vocab_size])
 
     # Transform to one hot
     #input_placeholder = tf.one_hot(input_placeholder, dataset.vocab_size)
@@ -87,14 +101,18 @@ def train(config):
     apply_gradients_op = optimizer.apply_gradients(zip(grads_clipped, variables))#, global_step=global_step)
 
     # Compute prediction of next character
-    next_logits = model._build_model(char_placeholder)
-    probabilities = model.probabilities(next_logits)
-    predictions   = model.predictions(probabilities)
+    #next_logits = model._build_model(char_placeholder)
+    #probabilities = model.probabilities(next_logits)
+    #predictions   = model.predictions(probabilities)
+
+    # Compute prediction given phrase
+    predictions = model.get_predictions(phrase_placeholder, 50)
 
     summary = tf.summary.merge_all()
     init = tf.global_variables_initializer()
     saver = tf.train.Saver()
     sess = tf.Session()
+    saver.restore(sess, "./checkpoints/model.ckpt")
     summary_writer = tf.summary.FileWriter(config.summary_path, sess.graph)
     sess.run(init)
     ###########################################################################
@@ -139,7 +157,12 @@ def train(config):
             #summary_writer.flush()
 
         if train_step % config.sample_every == 0:
-            inputs  = np.zeros((config.seq_length, config.batch_size, dataset.vocab_size))
+            predic = sess.run(predictions, feed_dict=feed_dict_sample)
+            #print(predic)
+            final_string = dataset.convert_to_string(predic)
+            print(final_string)
+            
+            '''inputs  = np.zeros((config.seq_length, config.batch_size, dataset.vocab_size))
             targets = np.zeros((config.batch_size, config.seq_length))
             char    = [0]
             char_   = np.zeros((1, config.batch_size, dataset.vocab_size))
@@ -159,7 +182,7 @@ def train(config):
                 #print(predic)
                 #print(dataset.convert_to_string(predic))
             print('\n\n\n\n\n\n')
-            print(final_string)
+            print(final_string)'''
 
         if train_step % config.checkpoint_every == 0:
             saver.save(sess, save_path='./checkpoints/model.ckpt')
