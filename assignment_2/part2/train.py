@@ -35,14 +35,14 @@ def one_hot(labels, num_classes):
 def get_batch(batch_size, seq_length, dataset):
     x,y = dataset.batch(batch_size, seq_length)
     x = np.transpose(x)
-    y = np.transpose(y)
+    #y = np.transpose(y)
     inputs  = np.zeros((x.shape[0], x.shape[1], dataset.vocab_size))
-    targets = np.zeros((y.shape[0], y.shape[1], dataset.vocab_size))
+    #targets = np.zeros((y.shape[0], y.shape[1], dataset.vocab_size))
     for i in range(len(x)):
         inputs[i, :, :] = one_hot(x[i, :], dataset.vocab_size)
-    for i in range(len(y)):
-        targets[i, :, :] = one_hot(y[i, :], dataset.vocab_size)
-    return inputs,targets
+    #for i in range(len(y)):
+    #    targets[i, :, :] = one_hot(y[i, :], dataset.vocab_size)
+    return inputs,y
 
 def train(config):
 
@@ -63,9 +63,10 @@ def train(config):
     ###########################################################################
 
     input_placeholder = tf.placeholder(tf.float32, [config.seq_length, config.batch_size, dataset.vocab_size])
-    label_placeholder = tf.placeholder(tf.float32, [config.seq_length, config.batch_size, dataset.vocab_size])
+    #label_placeholder = tf.placeholder(tf.float32, [config.seq_length, config.batch_size, dataset.vocab_size])
     #input_placeholder = tf.placeholder(tf.int32, [config.seq_length, config.batch_size])
-    #label_placeholder = tf.placeholder(tf.int32, [config.seq_length, config.batch_size])
+    label_placeholder = tf.placeholder(tf.int32, [config.batch_size, config.seq_length])
+    char_placeholder = tf.placeholder(tf.float32, [1,config.batch_size, dataset.vocab_size])
 
     # Transform to one hot
     #input_placeholder = tf.one_hot(input_placeholder, dataset.vocab_size)
@@ -85,7 +86,9 @@ def train(config):
     grads_clipped, _ = tf.clip_by_global_norm(grads, clip_norm=config.max_norm_gradient)
     apply_gradients_op = optimizer.apply_gradients(zip(grads_clipped, variables))#, global_step=global_step)
 
-    probabilities = model.probabilities(logits_per_step)
+    # Compute prediction of next character
+    next_logits = model._build_model(char_placeholder)
+    probabilities = model.probabilities(next_logits)
     predictions   = model.predictions(probabilities)
 
     summary = tf.summary.merge_all()
@@ -115,6 +118,7 @@ def train(config):
         feed_dict = {
             input_placeholder: inputs,
             label_placeholder: targets,
+            char_placeholder:  np.zeros((1,config.batch_size,dataset.vocab_size))#np.expand_dims(one_hot([1], dataset.vocab_size),1)
         }
         _, loss_value = sess.run([apply_gradients_op, loss], feed_dict=feed_dict)
 
@@ -129,11 +133,37 @@ def train(config):
                 int(config.train_steps), config.batch_size, examples_per_second,
                 loss_value
             ))
+            # Update the events file.
+            #summary_str = sess.run(summary, feed_dict=feed_dict)
+            #summary_writer.add_summary(summary_str, train_step)
+            #summary_writer.flush()
 
-    predic = sess.run(predictions, feed_dict=feed_dict)
-    print(predic.shape)
-    print(predic)
-    print(dataset.convert_to_string(predic))
+        if train_step % config.sample_every == 0:
+            inputs  = np.zeros((config.seq_length, config.batch_size, dataset.vocab_size))
+            targets = np.zeros((config.batch_size, config.seq_length))
+            char    = [0]
+            char_   = np.zeros((1, config.batch_size, dataset.vocab_size))
+            final_string = dataset.convert_to_string(char)
+            for _ in range(config.seq_length):
+                for i in range(config.batch_size):
+                    char_[:, i, :] = one_hot(char, dataset.vocab_size)
+                feed_dict = {
+                    input_placeholder: inputs,
+                    label_placeholder: targets,
+                    char_placeholder:  char_
+                }
+                predic = sess.run(predictions, feed_dict=feed_dict)
+                char   = [predic[0]]
+                final_string += dataset.convert_to_string(char)
+                #print(predic.shape)
+                #print(predic)
+                #print(dataset.convert_to_string(predic))
+            print('\n\n\n\n\n\n')
+            print(final_string)
+
+        if train_step % config.checkpoint_every == 0:
+            saver.save(sess, save_path='./checkpoints/model.ckpt')
+
 
 
 if __name__ == "__main__":
@@ -163,7 +193,9 @@ if __name__ == "__main__":
     parser.add_argument('--log_device_placement', type=bool, default=False, help='Log device placement for debugging')
     parser.add_argument('--summary_path', type=str, default="./summaries/", help='Output path for summaries')
     parser.add_argument('--print_every', type=int, default=5, help='How often to print training progress')
-    parser.add_argument('--sample_every', type=int, default=100, help='How often to sample from the model')
+    #parser.add_argument('--sample_every', type=int, default=100, help='How often to sample from the model')
+    parser.add_argument('--sample_every', type=int, default=200, help='How often to sample from the model')
+    parser.add_argument('--checkpoint_every', type=int, default=500, help='How often to save the model')
 
     config = parser.parse_args()
 
