@@ -112,7 +112,7 @@ def train(config):
     init = tf.global_variables_initializer()
     saver = tf.train.Saver()
     sess = tf.Session()
-    saver.restore(sess, "./checkpoints/model.ckpt")
+    #saver.restore(sess, "./checkpoints/model.ckpt")
     summary_writer = tf.summary.FileWriter(config.summary_path, sess.graph)
     sess.run(init)
     ###########################################################################
@@ -185,7 +185,7 @@ def train(config):
             print(final_string)'''
 
         if train_step % config.checkpoint_every == 0:
-            saver.save(sess, save_path='./checkpoints/model.ckpt')
+            saver.save(sess, save_path='./checkpoints/model2.ckpt')
 
 
 
