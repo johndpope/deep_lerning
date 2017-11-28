@@ -66,7 +66,7 @@ def train(config):
     # Implement code here.
     ###########################################################################
     # Load test data
-    test_size = config.batch_size*config.train_steps/3
+    test_size = int(config.batch_size*config.train_steps/3)
     x_test, y_test = get_batch(test_size, config.input_length)
 
     input_placeholder  = tf.placeholder(tf.float32, shape=(config.input_length-1, None, config.input_dim))
