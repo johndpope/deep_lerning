@@ -76,7 +76,7 @@ def train(config):
     logits_per_step = model._build_model(input_placeholder)
 
     # Define the optimizer
-    optimizer = tf.train.RMSPropOptimizer(config.learning_rate)
+    optimizer = tf.train.RMSPropOptimizer(config.learning_rate, decay=config.learning_rate_decay)
 
     # Compute the gradients for each variable
     loss = model._compute_loss(logits_per_step, label_placeholder)
