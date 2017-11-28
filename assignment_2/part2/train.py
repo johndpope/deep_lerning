@@ -190,7 +190,7 @@ def train(config):
             print(final_string)'''
 
         if train_step % config.checkpoint_every == 0:
-            saver.save(sess, save_path='./checkpoints/model2.ckpt')
+            saver.save(sess, save_path='./checkpoints/model3.ckpt')
 
 
 
