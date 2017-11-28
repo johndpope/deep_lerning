@@ -62,26 +62,26 @@ def train(config):
     # Implement code here.
     ###########################################################################
     phrase  = 'President'
-    inputs  = np.zeros((config.seq_length, config.batch_size, dataset.vocab_size))
-    targets = np.zeros((config.batch_size, config.seq_length))
-    phrase  = dataset.convert_to_numbers(phrase)
-    phrase_ = np.zeros((len(phrase), dataset.vocab_size))
-    for i,char in enumerate(phrase):
-        phrase_[i, :] = one_hot([char], dataset.vocab_size)
-    feed_dict_sample = {
-        input_placeholder: inputs,
-        label_placeholder: targets,
-        phrase_placeholder: np.expand_dims(phrase_, 1)
-    }
 
 
     input_placeholder = tf.placeholder(tf.float32, [config.seq_length, config.batch_size, dataset.vocab_size])
     #label_placeholder = tf.placeholder(tf.float32, [config.seq_length, config.batch_size, dataset.vocab_size])
     #input_placeholder = tf.placeholder(tf.int32, [config.seq_length, config.batch_size])
     label_placeholder = tf.placeholder(tf.int32, [config.batch_size, config.seq_length])
-    #char_placeholder = tf.placeholder(tf.float32, [1,config.batch_size, dataset.vocab_size])
+    char_placeholder = tf.placeholder(tf.float32, [1,1, dataset.vocab_size])
     phrase_placeholder = tf.placeholder(tf.float32, [len(phrase), 1, dataset.vocab_size])
 
+
+    phrase  = dataset.convert_to_numbers(phrase)
+    phrase_ = np.zeros((len(phrase), dataset.vocab_size))
+    for i,char in enumerate(phrase):
+        phrase_[i, :] = one_hot([char], dataset.vocab_size)
+    feed_dict_bonus = {
+        input_placeholder: np.zeros((config.seq_length, config.batch_size, dataset.vocab_size)),
+        label_placeholder: np.zeros((config.batch_size, config.seq_length)),
+        char_placeholder: np.zeros((1,1,dataset.vocab_size)),
+        phrase_placeholder: np.expand_dims(phrase_, 1)
+    }
     # Transform to one hot
     #input_placeholder = tf.one_hot(input_placeholder, dataset.vocab_size)
     #label_placeholder = tf.one_hot(label_placeholder, dataset.vocab_size)
@@ -106,7 +106,8 @@ def train(config):
     #predictions   = model.predictions(probabilities)
 
     # Compute prediction given phrase
-    predictions = model.get_predictions(phrase_placeholder, 50)
+    predictions = model.get_predictions(phrase_placeholder, 30)
+    predictions_char = model.get_predictions(char_placeholder, 30)
 
     summary = tf.summary.merge_all()
     init = tf.global_variables_initializer()
@@ -136,7 +137,8 @@ def train(config):
         feed_dict = {
             input_placeholder: inputs,
             label_placeholder: targets,
-            char_placeholder:  np.zeros((1,config.batch_size,dataset.vocab_size))#np.expand_dims(one_hot([1], dataset.vocab_size),1)
+            char_placeholder:  np.zeros((1,1,dataset.vocab_size)),#np.expand_dims(one_hot([1], dataset.vocab_size),1)
+            phrase_placeholder: np.zeros((len(phrase), 1, dataset.vocab_size))
         }
         _, loss_value = sess.run([apply_gradients_op, loss], feed_dict=feed_dict)
 
@@ -157,9 +159,12 @@ def train(config):
             #summary_writer.flush()
 
         if train_step % config.sample_every == 0:
-            predic = sess.run(predictions, feed_dict=feed_dict_sample)
+            feed_dict_bonus[char_placeholder] = np.expand_dims(one_hot([np.random.randint(0,dataset.vocab_size)], dataset.vocab_size),0)
+            predic, predic_char = sess.run([predictions, predictions_char], feed_dict=feed_dict_bonus)
             #print(predic)
             final_string = dataset.convert_to_string(predic)
+            print(final_string)
+            final_string = dataset.convert_to_string(predic_char)
             print(final_string)
             
             '''inputs  = np.zeros((config.seq_length, config.batch_size, dataset.vocab_size))

@@ -42,6 +42,7 @@ class TextGenerationModel(object):
         # Implement your model to return the logits per step of shape:
         #   [timesteps, batch_size, vocab_size]
         #logits_per_step = []
+        self.state = self.stacked_lstm.zero_state(self._batch_size, tf.float32)
         for step in range(x.shape[0]):
             output, self.state = self.stacked_lstm(x[step], self.state)
             logits = tf.matmul(output, self.Wout) + self.bias_out
