@@ -1,9 +1,15 @@
 #!/bin/bash
+#SBATCH -n 1
+#SBATCH -p gpu
+#SBATCH -t 01:00:00
+#SBATCH -o fibonacci_%A.output
+#SBATCH -e fibonacci_%A.error
 
-python3 train.py --print_every 50 --summary_path ./summaries/test10 --learning_rate 0.0025 --input_length 10
-python3 train.py --print_every 50 --summary_path ./summaries/test15 --learning_rate 0.0025 --input_length 15
+module load python/3.5.2
+module load cuda/8.0.44
+module load cudnn/8.0-v6.0
+
 python3 train.py --print_every 50 --summary_path ./summaries/test20 --learning_rate 0.0025 --input_length 20
-
 python3 train.py --print_every 50 --summary_path ./summaries/test25 --learning_rate 0.0025 --input_length 25
 python3 train.py --print_every 50 --summary_path ./summaries/test30 --learning_rate 0.0025 --input_length 30
 python3 train.py --print_every 50 --summary_path ./summaries/test35 --learning_rate 0.0025 --input_length 35
