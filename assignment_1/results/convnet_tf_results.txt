@@ -1,0 +1,387 @@
+default: 0.3458
+
+adam: 0.4836
+
+batch_norm primer intento: 0.4927 (tf.layers.batch_normalization)
+batch_norm segundo intento: 0.4931 (tf.layers.batch_normalization only in dense)
+
+
+
+
+
+
+
+##### Cnv net with batch normalization in dense layers after changing output depth correctly
+
+{
+	Step 0: loss = 16.86 (0.932 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 1260  Precision @ 1: 0.1262
+	Step 100: loss = 1.98 (0.959 sec)
+	Step 200: loss = 1.77 (0.985 sec)
+	Step 300: loss = 1.62 (0.957 sec)
+	Step 400: loss = 1.43 (0.953 sec)
+	Step 500: loss = 1.51 (0.958 sec)
+	Step 600: loss = 1.46 (0.969 sec)
+	Step 700: loss = 1.29 (1.044 sec)
+	Step 800: loss = 1.26 (1.084 sec)
+	Step 900: loss = 1.03 (1.098 sec)
+	Step 1000: loss = 1.15 (1.160 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5703  Precision @ 1: 0.5712
+	Step 1100: loss = 1.20 (0.980 sec)
+	Step 1200: loss = 1.05 (1.141 sec)
+	Step 1300: loss = 0.89 (0.985 sec)
+	Step 1400: loss = 1.01 (0.951 sec)
+	Step 1500: loss = 0.90 (1.364 sec)
+	Step 1600: loss = 0.73 (1.180 sec)
+	Step 1700: loss = 1.05 (0.945 sec)
+	Step 1800: loss = 0.82 (0.963 sec)
+	Step 1900: loss = 0.78 (1.071 sec)
+	Step 2000: loss = 0.59 (1.091 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 6474  Precision @ 1: 0.6484
+	Step 2100: loss = 0.79 (1.085 sec)
+	Step 2200: loss = 1.01 (1.188 sec)
+	Step 2300: loss = 0.83 (1.150 sec)
+	Step 2400: loss = 0.82 (0.987 sec)
+	Step 2500: loss = 0.67 (1.029 sec)
+	Step 2600: loss = 0.70 (0.964 sec)
+	Step 2700: loss = 0.68 (0.946 sec)
+	Step 2800: loss = 0.58 (0.951 sec)
+	Step 2900: loss = 0.68 (0.953 sec)
+	Step 3000: loss = 0.64 (0.952 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 6771  Precision @ 1: 0.6782
+	Step 3100: loss = 0.73 (0.950 sec)
+	Step 3200: loss = 0.56 (0.971 sec)
+	Step 3300: loss = 0.51 (0.987 sec)
+	Step 3400: loss = 0.60 (0.967 sec)
+	Step 3500: loss = 0.49 (0.960 sec)
+	Step 3600: loss = 0.43 (1.102 sec)
+	Step 3700: loss = 0.46 (1.080 sec)
+	Step 3800: loss = 0.41 (1.138 sec)
+	Step 3900: loss = 0.33 (1.162 sec)
+	Step 4000: loss = 0.28 (0.948 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 6882  Precision @ 1: 0.6893
+	Step 4100: loss = 0.42 (1.004 sec)
+	Step 4200: loss = 0.28 (0.951 sec)
+	Step 4300: loss = 0.29 (0.982 sec)
+	Step 4400: loss = 0.26 (0.959 sec)
+	Step 4500: loss = 0.25 (0.969 sec)
+	Step 4600: loss = 0.23 (1.306 sec)
+	Step 4700: loss = 0.22 (0.967 sec)
+	Step 4800: loss = 0.23 (0.944 sec)
+	Step 4900: loss = 0.16 (0.964 sec)
+	Step 5000: loss = 0.25 (0.963 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 6897  Precision @ 1: 0.6908
+	Step 5100: loss = 0.20 (0.960 sec)
+	Step 5200: loss = 0.18 (0.957 sec)
+	Step 5300: loss = 0.14 (0.961 sec)
+	Step 5400: loss = 0.15 (0.961 sec)
+	Step 5500: loss = 0.11 (0.976 sec)
+	Step 5600: loss = 0.15 (1.005 sec)
+	Step 5700: loss = 0.13 (1.093 sec)
+	Step 5800: loss = 0.15 (0.981 sec)
+	Step 5900: loss = 0.09 (0.951 sec)
+	Step 6000: loss = 0.09 (0.963 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 6937  Precision @ 1: 0.6948
+	Step 6100: loss = 0.08 (0.947 sec)
+	Step 6200: loss = 0.09 (0.972 sec)
+	Step 6300: loss = 0.04 (0.984 sec)
+	Step 6400: loss = 0.08 (1.014 sec)
+	Step 6500: loss = 0.11 (1.044 sec)
+	Step 6600: loss = 0.12 (0.998 sec)
+	Step 6700: loss = 0.05 (0.970 sec)
+	Step 6800: loss = 0.10 (1.009 sec)
+	Step 6900: loss = 0.07 (0.988 sec)
+	Step 7000: loss = 0.14 (1.060 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 6974  Precision @ 1: 0.6985
+	Step 7100: loss = 0.04 (1.033 sec)
+	Step 7200: loss = 0.11 (0.982 sec)
+	Step 7300: loss = 0.03 (1.099 sec)
+	Step 7400: loss = 0.06 (0.966 sec)
+	Step 7500: loss = 0.05 (0.959 sec)
+	Step 7600: loss = 0.03 (1.156 sec)
+	Step 7700: loss = 0.08 (1.125 sec)
+	Step 7800: loss = 0.03 (1.231 sec)
+	Step 7900: loss = 0.02 (1.113 sec)
+	Step 8000: loss = 0.04 (1.154 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 7022  Precision @ 1: 0.7033
+	Step 8100: loss = 0.07 (1.133 sec)
+	Step 8200: loss = 0.03 (1.211 sec)
+	Step 8300: loss = 0.07 (1.094 sec)
+	Step 8400: loss = 0.10 (1.113 sec)
+	Step 8500: loss = 0.06 (1.249 sec)
+	Step 8600: loss = 0.03 (1.021 sec)
+	Step 8700: loss = 0.09 (1.000 sec)
+	Step 8800: loss = 0.04 (1.222 sec)
+	Step 8900: loss = 0.06 (1.367 sec)
+	Step 9000: loss = 0.08 (1.058 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 6925  Precision @ 1: 0.6936
+	Step 9100: loss = 0.02 (0.992 sec)
+	Step 9200: loss = 0.05 (1.296 sec)
+	Step 9300: loss = 0.17 (1.078 sec)
+	Step 9400: loss = 0.03 (0.978 sec)
+	Step 9500: loss = 0.05 (0.973 sec)
+	Step 9600: loss = 0.02 (0.987 sec)
+	Step 9700: loss = 0.02 (1.341 sec)
+	Step 9800: loss = 0.04 (1.158 sec)
+	Step 9900: loss = 0.06 (1.367 sec)
+	Step 10000: loss = 0.05 (1.824 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 6964  Precision @ 1: 0.6975
+	Step 10100: loss = 0.07 (1.235 sec)
+	Step 10200: loss = 0.01 (1.000 sec)
+	Step 10300: loss = 0.02 (1.043 sec)
+	Step 10400: loss = 0.05 (0.998 sec)
+	Step 10500: loss = 0.05 (1.230 sec)
+	Step 10600: loss = 0.02 (1.236 sec)
+	Step 10700: loss = 0.02 (1.337 sec)
+	Step 10800: loss = 0.04 (0.976 sec)
+	Step 10900: loss = 0.08 (0.968 sec)
+	Step 11000: loss = 0.06 (1.006 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 6975  Precision @ 1: 0.6986
+	Step 11100: loss = 0.03 (1.115 sec)
+	Step 11200: loss = 0.03 (1.125 sec)
+	Step 11300: loss = 0.03 (0.990 sec)
+	Step 11400: loss = 0.02 (0.976 sec)
+	Step 11500: loss = 0.05 (0.972 sec)
+	Step 11600: loss = 0.04 (0.966 sec)
+	Step 11700: loss = 0.05 (0.964 sec)
+	Step 11800: loss = 0.02 (0.967 sec)
+	Step 11900: loss = 0.05 (0.968 sec)
+	Step 12000: loss = 0.05 (0.971 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 6908  Precision @ 1: 0.6919
+	Step 12100: loss = 0.04 (0.985 sec)
+	Step 12200: loss = 0.02 (0.954 sec)
+	Step 12300: loss = 0.02 (0.952 sec)
+	Step 12400: loss = 0.01 (1.005 sec)
+	Step 12500: loss = 0.08 (0.986 sec)
+	Step 12600: loss = 0.01 (1.002 sec)
+	Step 12700: loss = 0.01 (0.981 sec)
+	Step 12800: loss = 0.02 (1.002 sec)
+	Step 12900: loss = 0.03 (0.969 sec)
+	Step 13000: loss = 0.00 (1.293 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 6992  Precision @ 1: 0.7003
+	Step 13100: loss = 0.07 (1.239 sec)
+	Step 13200: loss = 0.00 (1.114 sec)
+	Step 13300: loss = 0.06 (1.147 sec)
+	Step 13400: loss = 0.03 (1.177 sec)
+	Step 13500: loss = 0.01 (1.174 sec)
+	Step 13600: loss = 0.12 (1.228 sec)
+	Step 13700: loss = 0.03 (1.126 sec)
+	Step 13800: loss = 0.03 (1.116 sec)
+	Step 13900: loss = 0.04 (1.156 sec)
+	Step 14000: loss = 0.09 (1.155 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 6913  Precision @ 1: 0.6924
+	Step 14100: loss = 0.06 (1.019 sec)
+	Step 14200: loss = 0.02 (1.054 sec)
+	Step 14300: loss = 0.03 (1.164 sec)
+	Step 14400: loss = 0.01 (0.989 sec)
+	Step 14500: loss = 0.01 (0.958 sec)
+	Step 14600: loss = 0.01 (0.969 sec)
+	Step 14700: loss = 0.02 (0.965 sec)
+	Step 14800: loss = 0.07 (0.977 sec)
+	Step 14900: loss = 0.08 (0.975 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 7041  Precision @ 1: 0.7052 }}
+
+
+
+
+##### Cnv net with batch normalization in dense layers
+
+{
+	Step 0: loss = 25.69 (0.206 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 1117  Precision @ 1: 0.1119
+	Step 100: loss = 3.23 (0.181 sec)
+	Step 200: loss = 2.23 (0.187 sec)
+	Step 300: loss = 2.03 (0.193 sec)
+	Step 400: loss = 2.00 (0.188 sec)
+	Step 500: loss = 2.03 (0.191 sec)
+	Step 600: loss = 1.85 (0.189 sec)
+	Step 700: loss = 1.55 (0.193 sec)
+	Step 800: loss = 1.39 (0.193 sec)
+	Step 900: loss = 1.38 (0.191 sec)
+	Step 1000: loss = 1.44 (0.188 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 4811  Precision @ 1: 0.4819
+	Step 1100: loss = 1.64 (0.191 sec)
+	Step 1200: loss = 1.36 (0.192 sec)
+	Step 1300: loss = 1.40 (0.195 sec)
+	Step 1400: loss = 1.32 (0.198 sec)
+	Step 1500: loss = 1.38 (0.191 sec)
+	Step 1600: loss = 1.22 (0.191 sec)
+	Step 1700: loss = 1.47 (0.191 sec)
+	Step 1800: loss = 1.03 (0.192 sec)
+	Step 1900: loss = 1.18 (0.192 sec)
+	Step 2000: loss = 1.09 (0.190 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5259  Precision @ 1: 0.5267
+	Step 2100: loss = 1.22 (0.193 sec)
+	Step 2200: loss = 1.35 (0.191 sec)
+	Step 2300: loss = 1.14 (0.188 sec)
+	Step 2400: loss = 1.09 (0.190 sec)
+	Step 2500: loss = 1.16 (0.192 sec)
+	Step 2600: loss = 1.24 (0.191 sec)
+	Step 2700: loss = 1.29 (0.193 sec)
+	Step 2800: loss = 1.19 (0.196 sec)
+	Step 2900: loss = 1.16 (0.191 sec)
+	Step 3000: loss = 1.12 (0.192 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5689  Precision @ 1: 0.5698
+	Step 3100: loss = 1.16 (0.191 sec)
+	Step 3200: loss = 1.01 (0.193 sec)
+	Step 3300: loss = 1.02 (0.192 sec)
+	Step 3400: loss = 1.14 (0.192 sec)
+	Step 3500: loss = 0.83 (0.192 sec)
+	Step 3600: loss = 0.93 (0.191 sec)
+	Step 3700: loss = 0.87 (0.192 sec)
+	Step 3800: loss = 0.91 (0.187 sec)
+	Step 3900: loss = 0.80 (0.186 sec)
+	Step 4000: loss = 0.64 (0.192 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5820  Precision @ 1: 0.5829
+	Step 4100: loss = 0.92 (0.192 sec)
+	Step 4200: loss = 0.84 (0.192 sec)
+	Step 4300: loss = 0.94 (0.192 sec)
+	Step 4400: loss = 0.87 (0.191 sec)
+	Step 4500: loss = 0.80 (0.190 sec)
+	Step 4600: loss = 0.80 (0.191 sec)
+	Step 4700: loss = 0.78 (0.194 sec)
+	Step 4800: loss = 0.83 (0.193 sec)
+	Step 4900: loss = 0.83 (0.196 sec)
+	Step 5000: loss = 0.89 (0.190 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5818  Precision @ 1: 0.5827
+	Step 5100: loss = 0.73 (0.193 sec)
+	Step 5200: loss = 0.68 (0.191 sec)
+	Step 5300: loss = 0.63 (0.192 sec)
+	Step 5400: loss = 0.64 (0.193 sec)
+	Step 5500: loss = 0.53 (0.189 sec)
+	Step 5600: loss = 0.60 (0.193 sec)
+	Step 5700: loss = 0.59 (0.192 sec)
+	Step 5800: loss = 0.55 (0.205 sec)
+	Step 5900: loss = 0.48 (0.192 sec)
+	Step 6000: loss = 0.51 (0.195 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5892  Precision @ 1: 0.5901
+	Step 6100: loss = 0.56 (0.188 sec)
+	Step 6200: loss = 0.46 (0.190 sec)
+	Step 6300: loss = 0.28 (0.192 sec)
+	Step 6400: loss = 0.39 (0.193 sec)
+	Step 6500: loss = 0.52 (0.192 sec)
+	Step 6600: loss = 0.41 (0.191 sec)
+	Step 6700: loss = 0.28 (0.192 sec)
+	Step 6800: loss = 0.31 (0.190 sec)
+	Step 6900: loss = 0.29 (0.190 sec)
+	Step 7000: loss = 0.40 (0.191 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5926  Precision @ 1: 0.5935
+	Step 7100: loss = 0.27 (0.191 sec)
+	Step 7200: loss = 0.34 (0.190 sec)
+	Step 7300: loss = 0.27 (0.201 sec)
+	Step 7400: loss = 0.39 (0.195 sec)
+	Step 7500: loss = 0.29 (0.191 sec)
+	Step 7600: loss = 0.26 (0.192 sec)
+	Step 7700: loss = 0.19 (0.193 sec)
+	Step 7800: loss = 0.27 (0.184 sec)
+	Step 7900: loss = 0.19 (0.189 sec)
+	Step 8000: loss = 0.25 (0.197 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5904  Precision @ 1: 0.5913
+	Step 8100: loss = 0.23 (0.194 sec)
+	Step 8200: loss = 0.13 (0.194 sec)
+	Step 8300: loss = 0.19 (0.195 sec)
+	Step 8400: loss = 0.28 (0.191 sec)
+	Step 8500: loss = 0.14 (0.221 sec)
+	Step 8600: loss = 0.12 (0.236 sec)
+	Step 8700: loss = 0.13 (0.191 sec)
+	Step 8800: loss = 0.17 (0.193 sec)
+	Step 8900: loss = 0.10 (0.190 sec)
+	Step 9000: loss = 0.05 (0.193 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5912  Precision @ 1: 0.5921
+	Step 9100: loss = 0.07 (0.192 sec)
+	Step 9200: loss = 0.07 (0.192 sec)
+	Step 9300: loss = 0.11 (0.231 sec)
+	Step 9400: loss = 0.11 (0.249 sec)
+	Step 9500: loss = 0.11 (0.239 sec)
+	Step 9600: loss = 0.04 (0.194 sec)
+	Step 9700: loss = 0.11 (0.204 sec)
+	Step 9800: loss = 0.06 (0.192 sec)
+	Step 9900: loss = 0.09 (0.209 sec)
+	Step 10000: loss = 0.04 (0.202 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5870  Precision @ 1: 0.5879
+	Step 10100: loss = 0.09 (0.195 sec)
+	Step 10200: loss = 0.07 (0.209 sec)
+	Step 10300: loss = 0.09 (0.201 sec)
+	Step 10400: loss = 0.06 (0.194 sec)
+	Step 10500: loss = 0.04 (0.198 sec)
+	Step 10600: loss = 0.03 (0.238 sec)
+	Step 10700: loss = 0.03 (0.197 sec)
+	Step 10800: loss = 0.04 (0.192 sec)
+	Step 10900: loss = 0.12 (0.201 sec)
+	Step 11000: loss = 0.04 (0.196 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5924  Precision @ 1: 0.5933
+	Step 11100: loss = 0.04 (0.193 sec)
+	Step 11200: loss = 0.18 (0.195 sec)
+	Step 11300: loss = 0.11 (0.223 sec)
+	Step 11400: loss = 0.08 (0.194 sec)
+	Step 11500: loss = 0.09 (0.192 sec)
+	Step 11600: loss = 0.04 (0.195 sec)
+	Step 11700: loss = 0.03 (0.186 sec)
+	Step 11800: loss = 0.02 (0.196 sec)
+	Step 11900: loss = 0.02 (0.196 sec)
+	Step 12000: loss = 0.06 (0.199 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5977  Precision @ 1: 0.5987
+	Step 12100: loss = 0.04 (0.193 sec)
+	Step 12200: loss = 0.02 (0.196 sec)
+	Step 12300: loss = 0.03 (0.194 sec)
+	Step 12400: loss = 0.03 (0.190 sec)
+	Step 12500: loss = 0.02 (0.200 sec)
+	Step 12600: loss = 0.01 (0.207 sec)
+	Step 12700: loss = 0.01 (0.195 sec)
+	Step 12800: loss = 0.01 (0.197 sec)
+	Step 12900: loss = 0.01 (0.192 sec)
+	Step 13000: loss = 0.02 (0.193 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5863  Precision @ 1: 0.5872
+	Step 13100: loss = 0.07 (0.192 sec)
+	Step 13200: loss = 0.25 (0.196 sec)
+	Step 13300: loss = 0.09 (0.192 sec)
+	Step 13400: loss = 0.04 (0.262 sec)
+	Step 13500: loss = 0.06 (0.202 sec)
+	Step 13600: loss = 0.08 (0.203 sec)
+	Step 13700: loss = 0.02 (0.196 sec)
+	Step 13800: loss = 0.01 (0.198 sec)
+	Step 13900: loss = 0.01 (0.194 sec)
+	Step 14000: loss = 0.01 (0.195 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5916  Precision @ 1: 0.5925
+	Step 14100: loss = 0.00 (0.191 sec)
+	Step 14200: loss = 0.00 (0.195 sec)
+	Step 14300: loss = 0.00 (0.226 sec)
+	Step 14400: loss = 0.00 (0.193 sec)
+	Step 14500: loss = 0.00 (0.331 sec)
+	Step 14600: loss = 0.00 (0.229 sec)
+	Step 14700: loss = 0.00 (0.209 sec)
+	Step 14800: loss = 0.00 (0.188 sec)
+	Step 14900: loss = 0.00 (0.195 sec)
+	Test Data Eval:
+	  Num examples: 9984  Num correct: 5996  Precision @ 1: 0.6006}
